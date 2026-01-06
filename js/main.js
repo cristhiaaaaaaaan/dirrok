@@ -172,36 +172,8 @@ if (contactForm) {
         // Simulate form submission
         console.log('Form data:', formData);
 
-        // Hide form and show success message
-        contactForm.style.display = 'none';
-        formSuccess.classList.add('show');
-
-        // Optional: Reset form after 5 seconds
-        setTimeout(() => {
-            contactForm.reset();
-            contactForm.style.display = 'grid';
-            formSuccess.classList.remove('show');
-        }, 5000);
-
-        // ========================================
-        // INTEGRACIÓN CON SERVICIOS EXTERNOS
-        // ========================================
-
-        // OPCIÓN 1: Integración con Google Forms
-        // Descomenta y reemplaza con tu URL de Google Forms
-        /*
-        const googleFormUrl = 'TU_URL_DE_GOOGLE_FORMS';
-        fetch(googleFormUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: new FormData(contactForm)
-        });
-        */
-
         // OPCIÓN 2: Integración con FormSubmit (Servicio gratuito de emails)
-        // Descomenta y reemplaza con tu email
-        /*
-        fetch('https://formsubmit.co/TU_EMAIL@ejemplo.com', {
+        fetch('https://formsubmit.co/Dirroks@gmail.com', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -212,20 +184,21 @@ if (contactForm) {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            // Hide form and show success message
+            contactForm.style.display = 'none';
+            formSuccess.classList.add('show');
+
+            // Reset form after 5 seconds
+            setTimeout(() => {
+                contactForm.reset();
+                contactForm.style.display = 'grid';
+                formSuccess.classList.remove('show');
+            }, 5000);
         })
         .catch(error => {
             console.error('Error:', error);
+            alert('Hubo un error al enviar el mensaje. Por favor intenta de nuevo.');
         });
-        */
-
-        // OPCIÓN 3: Redirigir a WhatsApp con los datos del formulario
-        // Descomenta para activar
-        /*
-        const whatsappNumber = '50612345678'; // Reemplaza con tu número
-        const whatsappMessage = `Hola! Mi nombre es ${formData.name}.%0A%0AEstoy interesado en: ${formData.service}%0A%0AMensaje: ${formData.message}%0A%0AMi email: ${formData.email}${formData.phone ? '%0ATeléfono: ' + formData.phone : ''}`;
-        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-        window.open(whatsappUrl, '_blank');
-        */
     });
 }
 
