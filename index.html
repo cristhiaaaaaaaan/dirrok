@@ -375,7 +375,7 @@
 
                 <!-- Contact Form -->
                 <div class="contact-form-wrapper" data-aos="fade-right">
-                    <form class="contact-form" id="contactForm">
+                    <form class="contact-form" id="contactForm" action="https://formsubmit.co/Dirroks@gmail.com" method="POST">
                         <div class="form-group">
                             <label for="name">
                                 <i class="fas fa-user"></i>
@@ -444,6 +444,12 @@
                                 required
                             ></textarea>
                         </div>
+
+                        <!-- FormSubmit Configuration -->
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_next" value="https://dirrok.netlify.app?success=true">
+                        <input type="hidden" name="_subject" value="Nuevo contacto desde tu sitio web!">
+                        <input type="text" name="_honey" style="display:none">
 
                         <button type="submit" class="btn btn-primary btn-block">
                             <span>Enviar Mensaje</span>

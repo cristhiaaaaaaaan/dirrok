@@ -156,50 +156,22 @@ if (statsSection) {
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
 
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+// Check if URL has success parameter
+if (window.location.search.includes('success=true')) {
+    if (contactForm && formSuccess) {
+        contactForm.style.display = 'none';
+        formSuccess.classList.add('show');
 
-        // Get form data
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            service: document.getElementById('service').value,
-            message: document.getElementById('message').value
-        };
+        // Remove success parameter from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
 
-        // Simulate form submission
-        console.log('Form data:', formData);
-
-        // OPCIÓN 2: Integración con FormSubmit (Servicio gratuito de emails)
-        fetch('https://formsubmit.co/Dirroks@gmail.com', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            // Hide form and show success message
-            contactForm.style.display = 'none';
-            formSuccess.classList.add('show');
-
-            // Reset form after 5 seconds
-            setTimeout(() => {
-                contactForm.reset();
-                contactForm.style.display = 'grid';
-                formSuccess.classList.remove('show');
-            }, 5000);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Hubo un error al enviar el mensaje. Por favor intenta de nuevo.');
-        });
-    });
+        // Reset after 5 seconds
+        setTimeout(() => {
+            contactForm.reset();
+            contactForm.style.display = 'grid';
+            formSuccess.classList.remove('show');
+        }, 5000);
+    }
 }
 
 // ========================================
