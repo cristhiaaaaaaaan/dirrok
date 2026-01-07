@@ -68,6 +68,26 @@ function setActiveLink() {
 window.addEventListener('scroll', setActiveLink);
 
 // ========================================
+// THEME TOGGLE (DARK/LIGHT MODE)
+// ========================================
+
+const themeToggle = document.getElementById('themeToggle');
+const htmlElement = document.documentElement;
+
+// Check for saved theme preference or default to 'dark'
+const currentTheme = localStorage.getItem('theme') || 'dark';
+htmlElement.setAttribute('data-theme', currentTheme);
+
+// Theme toggle click handler
+themeToggle.addEventListener('click', () => {
+    const theme = htmlElement.getAttribute('data-theme');
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+
+    htmlElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+});
+
+// ========================================
 // SMOOTH SCROLL
 // ========================================
 
@@ -263,11 +283,10 @@ if ('IntersectionObserver' in window) {
 }
 
 // ========================================
-// TYPING EFFECT FOR HERO TITLE (Optional)
+// TYPING EFFECT FOR HERO TITLE
 // ========================================
 
-/*
-function typeWriter(element, text, speed = 50) {
+function typeWriter(element, text, speed = 80) {
     let i = 0;
     element.innerHTML = '';
 
@@ -279,13 +298,16 @@ function typeWriter(element, text, speed = 50) {
         }
     }
 
-    type();
+    setTimeout(() => {
+        type();
+    }, 500);
 }
 
-// Example usage:
-// const heroTitle = document.querySelector('.hero-title');
-// typeWriter(heroTitle, 'Transforma Tu Cuerpo, Transforma Tu Vida');
-*/
+// Apply typing effect to hero highlight text
+const typingText = document.getElementById('typingText');
+if (typingText) {
+    typeWriter(typingText, 'Mejor Versión');
+}
 
 // ========================================
 // CURSOR CUSTOM EFFECT (Optional Advanced Feature)
@@ -333,53 +355,18 @@ window.addEventListener('load', () => {
 });
 
 // ========================================
-// PRELOADER (Optional)
+// PRELOADER
 // ========================================
 
-/*
 window.addEventListener('load', () => {
     const preloader = document.querySelector('.preloader');
     if (preloader) {
-        preloader.style.opacity = '0';
+        preloader.classList.add('fade-out');
         setTimeout(() => {
             preloader.style.display = 'none';
         }, 500);
     }
 });
-
-// Add to HTML before closing body tag:
-<div class="preloader">
-    <div class="loader"></div>
-</div>
-
-// Add to CSS:
-.preloader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--dark-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    transition: opacity 0.5s ease;
-}
-
-.loader {
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(255, 107, 53, 0.2);
-    border-top-color: var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-*/
 
 // ========================================
 // CONSOLE MESSAGE

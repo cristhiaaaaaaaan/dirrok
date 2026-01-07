@@ -47,6 +47,11 @@
                     <li><a href="#contact" class="nav-link">Contacto</a></li>
                 </ul>
 
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </button>
+
                 <div class="hamburger" id="hamburger">
                     <span></span>
                     <span></span>
@@ -64,7 +69,7 @@
                 <div class="hero-text" data-aos="fade-up">
                     <span class="hero-subtitle">Transforma Tu Cuerpo, Transforma Tu Vida</span>
                     <h1 class="hero-title">
-                        No Esperes Más Para Ser La <span class="highlight">Mejor Versión</span> De Ti Mismo
+                        No Esperes Más Para Ser La <span class="highlight" id="typingText"></span> De Ti Mismo
                     </h1>
                     <p class="hero-description">
                         Entrenamiento personalizado, resultados reales. Alcanza tus objetivos fitness con un plan diseñado específicamente para ti.
@@ -149,6 +154,41 @@
                         <span>Descubre Mis Servicios</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
+                </div>
+            </div>
+
+            <!-- VIDEO SECTION (Ready for your video) -->
+            <div class="video-section" data-aos="fade-up">
+                <div class="video-header">
+                    <h3>Conoce Mi Método de Entrenamiento</h3>
+                    <p>Un mensaje personal para ti</p>
+                </div>
+                <!--
+                    INSTRUCCIONES: Reemplaza este placeholder con tu video
+
+                    Opción 1 - YouTube:
+                    <div class="video-wrapper">
+                        <iframe
+                            src="https://www.youtube.com/embed/TU_VIDEO_ID"
+                            title="Video de presentación"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    Opción 2 - Video Local:
+                    <div class="video-wrapper">
+                        <video controls poster="images/video-thumbnail.jpg">
+                            <source src="videos/presentacion.mp4" type="video/mp4">
+                            Tu navegador no soporta el elemento video.
+                        </video>
+                    </div>
+                -->
+                <div class="video-placeholder">
+                    <i class="fas fa-video"></i>
+                    <p>Agrega tu video aquí</p>
+                    <span>15-30 segundos de presentación personal</span>
                 </div>
             </div>
         </div>
@@ -585,6 +625,11 @@
     <button class="scroll-top" id="scrollTop" aria-label="Volver arriba">
         <i class="fas fa-arrow-up"></i>
     </button>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
 
     <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
