@@ -459,6 +459,15 @@ section {
     position: relative;
 }
 
+.about-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
 .about-img-placeholder {
     background: var(--dark-card);
     border-radius: var(--radius-lg);
