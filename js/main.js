@@ -216,7 +216,7 @@ if (emailInput) {
 }
 
 // ========================================
-// 3D HERO CAROUSEL
+// 3D HERO CAROUSEL (ELITE VERSION)
 // ========================================
 
 class HeroCarousel {
@@ -225,10 +225,20 @@ class HeroCarousel {
         this.indicators = document.querySelectorAll('.indicator');
         this.prevBtn = document.querySelector('.carousel-prev');
         this.nextBtn = document.querySelector('.carousel-next');
+        this.carousel = document.querySelector('.hero-carousel');
         this.currentSlide = 0;
         this.totalSlides = this.slides.length;
         this.autoPlayInterval = null;
         this.autoPlayDelay = 5000; // 5 seconds
+
+        // Tilt effect properties
+        this.tiltEnabled = true;
+        this.maxTilt = 5; // degrees
+
+        // Reactive background
+        this.canvas = document.getElementById('reactiveCanvas');
+        this.ctx = this.canvas?.getContext('2d');
+        this.bgContainer = document.querySelector('.carousel-reactive-bg');
 
         this.init();
     }
@@ -261,9 +271,14 @@ class HeroCarousel {
         this.startAutoPlay();
 
         // Pause on hover
-        const carousel = document.querySelector('.hero-carousel');
-        carousel?.addEventListener('mouseenter', () => this.stopAutoPlay());
-        carousel?.addEventListener('mouseleave', () => this.startAutoPlay());
+        this.carousel?.addEventListener('mouseenter', () => this.stopAutoPlay());
+        this.carousel?.addEventListener('mouseleave', () => this.startAutoPlay());
+
+        // Tilt effect with mouse
+        this.addTiltEffect();
+
+        // Reactive background
+        this.initReactiveBackground();
     }
 
     updateSlides() {
@@ -283,6 +298,9 @@ class HeroCarousel {
         this.indicators.forEach((indicator, index) => {
             indicator.classList.toggle('active', index === this.currentSlide);
         });
+
+        // Update reactive background
+        this.updateReactiveBackground();
     }
 
     nextSlide() {
@@ -357,6 +375,148 @@ class HeroCarousel {
         };
 
         this.handleSwipe = handleSwipe;
+    }
+
+    // ========================================
+    // TILT EFFECT WITH MOUSE (PARALLAX 3D)
+    // ========================================
+    addTiltEffect() {
+        if (!this.tiltEnabled || !this.carousel) return;
+
+        this.carousel.addEventListener('mousemove', (e) => {
+            const activeSlide = document.querySelector('.carousel-slide.active');
+            if (!activeSlide) return;
+
+            const rect = this.carousel.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            // Calculate rotation based on mouse position
+            const rotateX = ((y - centerY) / centerY) * this.maxTilt;
+            const rotateY = ((centerX - x) / centerX) * this.maxTilt;
+
+            // Apply transform with smooth transition
+            activeSlide.style.transform = `
+                translateX(0)
+                rotateY(${rotateY}deg)
+                rotateX(${rotateX}deg)
+                scale(1)
+                translateZ(20px)
+            `;
+        });
+
+        this.carousel.addEventListener('mouseleave', () => {
+            const activeSlide = document.querySelector('.carousel-slide.active');
+            if (!activeSlide) return;
+
+            // Reset to original position
+            activeSlide.style.transform = 'translateX(0) rotateY(0deg) rotateX(0deg) scale(1) translateZ(0)';
+        });
+    }
+
+    // ========================================
+    // REACTIVE BACKGROUND (COLOR EXTRACTION)
+    // ========================================
+    initReactiveBackground() {
+        if (!this.canvas || !this.ctx) return;
+
+        // Set canvas size
+        this.resizeCanvas();
+        window.addEventListener('resize', () => this.resizeCanvas());
+
+        // Update background when slide changes
+        this.updateReactiveBackground();
+    }
+
+    resizeCanvas() {
+        if (!this.canvas) return;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+
+    updateReactiveBackground() {
+        const activeSlide = this.slides[this.currentSlide];
+        const img = activeSlide?.querySelector('img');
+
+        if (!img || !this.ctx || !this.canvas) return;
+
+        // Wait for image to load
+        if (!img.complete) {
+            img.addEventListener('load', () => this.drawReactiveBackground(img), { once: true });
+        } else {
+            this.drawReactiveBackground(img);
+        }
+    }
+
+    drawReactiveBackground(img) {
+        if (!this.ctx || !this.canvas || !this.bgContainer) return;
+
+        try {
+            // Create temporary canvas to extract colors
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = 100;
+            tempCanvas.height = 100;
+
+            // Draw scaled down image
+            tempCtx.drawImage(img, 0, 0, 100, 100);
+
+            // Get average color from center region
+            const imageData = tempCtx.getImageData(30, 30, 40, 40);
+            const data = imageData.data;
+            let r = 0, g = 0, b = 0;
+
+            for (let i = 0; i < data.length; i += 4) {
+                r += data[i];
+                g += data[i + 1];
+                b += data[i + 2];
+            }
+
+            const pixelCount = data.length / 4;
+            r = Math.floor(r / pixelCount);
+            g = Math.floor(g / pixelCount);
+            b = Math.floor(b / pixelCount);
+
+            // Create gradient background
+            const gradient = this.ctx.createRadialGradient(
+                this.canvas.width / 2, this.canvas.height / 2, 0,
+                this.canvas.width / 2, this.canvas.height / 2, this.canvas.width / 1.5
+            );
+
+            gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.8)`);
+            gradient.addColorStop(0.5, `rgba(${r * 0.6}, ${g * 0.6}, ${b * 0.6}, 0.5)`);
+            gradient.addColorStop(1, `rgba(${r * 0.3}, ${g * 0.3}, ${b * 0.3}, 0.2)`);
+
+            // Clear and draw
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.fillStyle = gradient;
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+            // Show background
+            this.bgContainer.classList.add('active');
+        } catch (error) {
+            // CORS error or image not loaded - use fallback gradient
+            console.warn('Reactive background failed (CORS), using fallback:', error.message);
+
+            // Fallback: use default orange gradient
+            const gradient = this.ctx.createRadialGradient(
+                this.canvas.width / 2, this.canvas.height / 2, 0,
+                this.canvas.width / 2, this.canvas.height / 2, this.canvas.width / 1.5
+            );
+
+            gradient.addColorStop(0, 'rgba(255, 107, 53, 0.6)');
+            gradient.addColorStop(0.5, 'rgba(212, 72, 21, 0.4)');
+            gradient.addColorStop(1, 'rgba(26, 31, 58, 0.2)');
+
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.fillStyle = gradient;
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+            this.bgContainer.classList.add('active');
+        }
     }
 }
 

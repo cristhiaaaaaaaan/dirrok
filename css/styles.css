@@ -671,22 +671,28 @@ section {
 }
 
 .video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-    height: 0;
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
+    background: var(--bg-card);
 }
 
-.video-wrapper iframe,
-.video-wrapper video {
-    position: absolute;
-    top: 0;
-    left: 0;
+.video-wrapper iframe {
+    position: relative;
     width: 100%;
-    height: 100%;
+    aspect-ratio: 16 / 9;
     border-radius: var(--radius-lg);
+}
+
+.video-wrapper video {
+    max-width: 100%;
+    max-height: 600px;
+    width: auto;
+    height: auto;
+    border-radius: var(--radius-lg);
+    display: block;
 }
 
 .video-placeholder {
@@ -1393,23 +1399,30 @@ section {
 
 .carousel-slide.active {
     opacity: 1;
-    transform: translateX(0) rotateY(0deg) scale(1);
+    transform: translateX(0) rotateY(0deg) scale(1) translateZ(0);
     pointer-events: auto;
     z-index: 2;
+    filter: brightness(1) saturate(1.1);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8),
+                0 0 80px rgba(255, 107, 53, 0.3);
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+                transform 0.1s ease-out;
 }
 
 .carousel-slide.prev {
-    opacity: 0.3;
-    transform: translateX(-60%) rotateY(-35deg) scale(0.7);
-    filter: blur(3px) brightness(0.6);
+    opacity: 0.35;
+    transform: translateX(-60%) rotateY(-35deg) scale(0.7) translateZ(-200px);
+    filter: blur(8px) brightness(0.5) saturate(0.7);
     z-index: 1;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
 }
 
 .carousel-slide.next {
-    opacity: 0.3;
-    transform: translateX(60%) rotateY(35deg) scale(0.7);
-    filter: blur(3px) brightness(0.6);
+    opacity: 0.35;
+    transform: translateX(60%) rotateY(35deg) scale(0.7) translateZ(-200px);
+    filter: blur(8px) brightness(0.5) saturate(0.7);
     z-index: 1;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
 }
 
 .carousel-slide img {
@@ -1521,13 +1534,36 @@ section {
     z-index: 3;
 }
 
+/* Reactive Background Canvas */
+.carousel-reactive-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.carousel-reactive-bg.active {
+    opacity: 0.4;
+}
+
+.carousel-reactive-bg canvas {
+    width: 100%;
+    height: 100%;
+    filter: blur(60px) saturate(1.5);
+}
+
 /* Enhance overlay for better text readability */
 .hero-overlay {
     z-index: 2;
     background: linear-gradient(135deg,
-        rgba(10, 14, 39, 0.85) 0%,
-        rgba(26, 31, 58, 0.75) 50%,
-        rgba(10, 14, 39, 0.85) 100%);
+        rgba(10, 14, 39, 0.88) 0%,
+        rgba(26, 31, 58, 0.80) 50%,
+        rgba(10, 14, 39, 0.88) 100%);
+    backdrop-filter: blur(2px);
 }
 
 /* Carousel Animation Effects */
