@@ -35,7 +35,9 @@
         <div class="container">
             <div class="nav-wrapper">
                 <a href="#home" class="logo">
-                    <i class="fas fa-dumbbell"></i>
+                    <svg class="logo-svg" width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="dumbbell-path" d="M20 50 L35 50 M65 50 L80 50 M35 30 L35 70 M65 30 L65 70 M10 35 L10 65 M90 35 L90 65 M10 35 L20 35 L20 65 L10 65 M80 35 L90 35 L90 65 L80 65 M20 45 L35 45 M20 55 L35 55 M65 45 L80 45 M65 55 L80 55" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                     <span>FIT<strong>COACH</strong></span>
                 </a>
 
@@ -61,10 +63,26 @@
         </div>
     </nav>
 
+    <!-- Cursor Trail -->
+    <div class="cursor-trail" id="cursorTrail"></div>
+
     <!-- HERO SECTION -->
     <section class="hero" id="home">
         <!-- Floating Particles -->
         <div class="floating-particles" id="floatingParticles"></div>
+
+        <!-- Morphing SVG Shapes -->
+        <div class="morphing-shapes">
+            <svg class="morph-shape shape-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path class="morph-path" d="M100,20 C150,20 180,50 180,100 C180,150 150,180 100,180 C50,180 20,150 20,100 C20,50 50,20 100,20" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <svg class="morph-shape shape-2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path class="morph-path" d="M100,10 L190,100 L100,190 L10,100 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <svg class="morph-shape shape-3" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <polygon class="morph-polygon" points="100,10 40,198 190,78 10,78 160,198" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+        </div>
 
         <!-- Reactive Background -->
         <div class="carousel-reactive-bg">
@@ -110,7 +128,7 @@
                     <h1 class="hero-title">
                         <span class="anime-title-text">No Esperes Más Para Ser La</span> <span class="highlight" id="typingText"></span> <span class="anime-title-text">De Ti Mismo</span>
                     </h1>
-                    <p class="hero-description">
+                    <p class="hero-description text-scramble" data-text="Entrenamiento personalizado. Resultados reales. Un plan diseñado para ti.">
                         Entrenamiento personalizado. Resultados reales. Un plan diseñado para ti.
                     </p>
                     <div class="hero-buttons">

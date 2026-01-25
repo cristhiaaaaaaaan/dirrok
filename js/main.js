@@ -1213,4 +1213,349 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     console.log('%c✨ Anime.js animations loaded!', 'color: #ff6b35; font-size: 14px; font-weight: bold;');
+
+    // ========================================
+    // 16. SVG LOGO PATH DRAWING
+    // ========================================
+    const logoSvg = document.querySelector('.logo-svg');
+    const dumbbellPath = document.querySelector('.dumbbell-path');
+
+    if (dumbbellPath) {
+        // Get the total length of the path
+        const pathLength = dumbbellPath.getTotalLength ? dumbbellPath.getTotalLength() : 1000;
+        dumbbellPath.style.strokeDasharray = pathLength;
+        dumbbellPath.style.strokeDashoffset = pathLength;
+
+        anime({
+            targets: dumbbellPath,
+            strokeDashoffset: [pathLength, 0],
+            duration: 2000,
+            delay: 500,
+            easing: 'easeInOutQuart',
+            complete: function() {
+                // Pulse effect after drawing
+                anime({
+                    targets: logoSvg,
+                    scale: [1, 1.1, 1],
+                    duration: 500,
+                    easing: 'easeOutElastic(1, .5)'
+                });
+            }
+        });
+    }
+
+    // ========================================
+    // 17. MAGNETIC BUTTONS
+    // ========================================
+    const magneticButtons = document.querySelectorAll('.btn-primary, .btn-secondary');
+
+    magneticButtons.forEach(btn => {
+        btn.classList.add('magnetic');
+
+        btn.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            // Magnetic pull strength
+            const strength = 0.3;
+
+            anime.remove(this);
+            anime({
+                targets: this,
+                translateX: x * strength,
+                translateY: y * strength,
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+        });
+
+        btn.addEventListener('mouseleave', function() {
+            anime.remove(this);
+            anime({
+                targets: this,
+                translateX: 0,
+                translateY: 0,
+                duration: 600,
+                easing: 'easeOutElastic(1, .3)'
+            });
+        });
+    });
+
+    // ========================================
+    // 18. MOUSE PARALLAX EFFECT
+    // ========================================
+    const heroSection = document.querySelector('.hero');
+    const parallaxElements = [
+        { selector: '.hero-subtitle', strength: 0.02 },
+        { selector: '.hero-title', strength: 0.015 },
+        { selector: '.hero-description', strength: 0.01 },
+        { selector: '.morph-shape.shape-1', strength: 0.05 },
+        { selector: '.morph-shape.shape-2', strength: -0.04 },
+        { selector: '.morph-shape.shape-3', strength: 0.03 }
+    ];
+
+    if (heroSection) {
+        document.addEventListener('mousemove', function(e) {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const mouseX = e.clientX - centerX;
+            const mouseY = e.clientY - centerY;
+
+            parallaxElements.forEach(item => {
+                const element = document.querySelector(item.selector);
+                if (element) {
+                    const moveX = mouseX * item.strength;
+                    const moveY = mouseY * item.strength;
+
+                    anime({
+                        targets: element,
+                        translateX: moveX,
+                        translateY: moveY,
+                        duration: 1000,
+                        easing: 'easeOutQuad'
+                    });
+                }
+            });
+        });
+    }
+
+    // ========================================
+    // 19. TEXT SCRAMBLE EFFECT
+    // ========================================
+    const scrambleTexts = document.querySelectorAll('.text-scramble');
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
+
+    scrambleTexts.forEach(element => {
+        const originalText = element.getAttribute('data-text') || element.textContent;
+        element.textContent = '';
+
+        // Create spans for each character
+        originalText.split('').forEach((char, index) => {
+            const span = document.createElement('span');
+            span.className = 'scramble-char';
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.setAttribute('data-char', char);
+            element.appendChild(span);
+        });
+
+        const charSpans = element.querySelectorAll('.scramble-char');
+
+        // Scramble animation
+        charSpans.forEach((span, index) => {
+            const originalChar = span.getAttribute('data-char');
+            let iterations = 0;
+            const maxIterations = 5;
+
+            // Random scramble before revealing
+            const scrambleInterval = setInterval(() => {
+                if (iterations < maxIterations) {
+                    span.textContent = originalChar === ' ' ? '\u00A0' : chars[Math.floor(Math.random() * chars.length)];
+                    iterations++;
+                } else {
+                    span.textContent = originalChar === ' ' ? '\u00A0' : originalChar;
+                    clearInterval(scrambleInterval);
+                }
+            }, 50);
+
+            // Animate opacity
+            anime({
+                targets: span,
+                opacity: [0, 1],
+                duration: 100,
+                delay: 1800 + (index * 20),
+                easing: 'easeOutQuad'
+            });
+        });
+    });
+
+    // ========================================
+    // 20. MORPHING SVG SHAPES
+    // ========================================
+    const morphShapes = document.querySelectorAll('.morph-shape');
+
+    morphShapes.forEach((shape, index) => {
+        // Initial fade in
+        anime({
+            targets: shape,
+            opacity: [0, 0.15],
+            scale: [0.5, 1],
+            duration: 1500,
+            delay: 1000 + (index * 300),
+            easing: 'easeOutQuad'
+        });
+
+        // Continuous rotation
+        anime({
+            targets: shape,
+            rotate: index % 2 === 0 ? 360 : -360,
+            duration: 30000 + (index * 10000),
+            easing: 'linear',
+            loop: true
+        });
+
+        // Morphing scale pulse
+        anime({
+            targets: shape,
+            scale: [1, 1.1, 1],
+            duration: 4000 + (index * 1000),
+            easing: 'easeInOutQuad',
+            direction: 'alternate',
+            loop: true
+        });
+    });
+
+    // ========================================
+    // 21. CURSOR TRAIL EFFECT
+    // ========================================
+    const cursorTrail = document.getElementById('cursorTrail');
+    const trailDots = [];
+    const trailLength = 15;
+    const mousePos = { x: 0, y: 0 };
+    let isMouseMoving = false;
+    let mouseTimeout;
+
+    if (cursorTrail) {
+        // Create trail dots
+        for (let i = 0; i < trailLength; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'trail-dot' + (i < 3 ? ' glow' : '');
+            cursorTrail.appendChild(dot);
+            trailDots.push({
+                el: dot,
+                x: 0,
+                y: 0,
+                size: Math.max(2, 8 - (i * 0.5))
+            });
+            dot.style.width = trailDots[i].size + 'px';
+            dot.style.height = trailDots[i].size + 'px';
+        }
+
+        // Track mouse position
+        document.addEventListener('mousemove', function(e) {
+            mousePos.x = e.clientX;
+            mousePos.y = e.clientY;
+            isMouseMoving = true;
+
+            clearTimeout(mouseTimeout);
+            mouseTimeout = setTimeout(() => {
+                isMouseMoving = false;
+            }, 100);
+        });
+
+        // Animate trail
+        function animateTrail() {
+            let prevX = mousePos.x;
+            let prevY = mousePos.y;
+
+            trailDots.forEach((dot, index) => {
+                // Smooth follow
+                const speed = 0.35 - (index * 0.02);
+                dot.x += (prevX - dot.x) * speed;
+                dot.y += (prevY - dot.y) * speed;
+
+                dot.el.style.left = dot.x + 'px';
+                dot.el.style.top = dot.y + 'px';
+
+                // Show/hide based on movement
+                if (isMouseMoving) {
+                    dot.el.style.opacity = 1 - (index / trailLength);
+                    dot.el.style.transform = 'scale(1) translate(-50%, -50%)';
+                } else {
+                    dot.el.style.opacity = 0;
+                    dot.el.style.transform = 'scale(0) translate(-50%, -50%)';
+                }
+
+                prevX = dot.x;
+                prevY = dot.y;
+            });
+
+            requestAnimationFrame(animateTrail);
+        }
+
+        animateTrail();
+    }
+
+    // ========================================
+    // 22. SERVICE ICON HOVER ANIMATION
+    // ========================================
+    const serviceIcons = document.querySelectorAll('.service-icon');
+
+    serviceIcons.forEach(icon => {
+        icon.addEventListener('mouseenter', function() {
+            anime({
+                targets: this.querySelector('i'),
+                rotateY: 360,
+                scale: [1, 1.2, 1],
+                duration: 800,
+                easing: 'easeOutElastic(1, .5)'
+            });
+        });
+    });
+
+    // ========================================
+    // 23. CTA BOX ANIMATION
+    // ========================================
+    const ctaBox = document.querySelector('.cta-box');
+    if (ctaBox) {
+        const ctaObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    anime.timeline({ easing: 'easeOutExpo' })
+                        .add({
+                            targets: ctaBox,
+                            scale: [0.8, 1],
+                            opacity: [0, 1],
+                            duration: 800
+                        })
+                        .add({
+                            targets: ctaBox.querySelector('i'),
+                            rotate: [0, 360],
+                            scale: [0, 1],
+                            duration: 600
+                        }, '-=400')
+                        .add({
+                            targets: ctaBox.querySelectorAll('h4, p'),
+                            opacity: [0, 1],
+                            translateY: [20, 0],
+                            delay: anime.stagger(100),
+                            duration: 500
+                        }, '-=300');
+
+                    ctaObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        ctaObserver.observe(ctaBox);
+    }
+
+    // ========================================
+    // 24. FOOTER SOCIAL ICONS ANIMATION
+    // ========================================
+    const socialIcons = document.querySelectorAll('.social-icons a');
+
+    socialIcons.forEach((icon, index) => {
+        icon.addEventListener('mouseenter', function() {
+            anime({
+                targets: this,
+                translateY: -8,
+                rotate: [0, 15, -15, 0],
+                duration: 400,
+                easing: 'easeOutQuad'
+            });
+        });
+
+        icon.addEventListener('mouseleave', function() {
+            anime({
+                targets: this,
+                translateY: 0,
+                rotate: 0,
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+        });
+    });
+
+    console.log('%c🚀 Advanced animations loaded!', 'color: #1a759f; font-size: 14px; font-weight: bold;');
 });

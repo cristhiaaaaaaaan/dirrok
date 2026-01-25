@@ -1640,6 +1640,16 @@ section {
         --section-padding: 60px 20px;
     }
 
+    /* Disable heavy effects on mobile for performance */
+    .cursor-trail,
+    .morphing-shapes {
+        display: none !important;
+    }
+
+    .trail-dot {
+        display: none;
+    }
+
     .hero-buttons {
         flex-direction: column;
         align-items: stretch;
@@ -1773,6 +1783,115 @@ section {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   ADVANCED ANIME.JS EFFECTS
+======================================== */
+
+/* Logo SVG Animation */
+.logo-svg {
+    width: 32px;
+    height: 32px;
+    color: var(--primary-color);
+}
+
+.logo-svg .dumbbell-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+}
+
+/* Cursor Trail */
+.cursor-trail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    overflow: hidden;
+}
+
+.trail-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0);
+}
+
+.trail-dot.glow {
+    box-shadow: 0 0 10px var(--primary-color),
+                0 0 20px var(--primary-color);
+}
+
+/* Morphing SVG Shapes */
+.morphing-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.morph-shape {
+    position: absolute;
+    opacity: 0.1;
+    color: var(--primary-color);
+}
+
+.morph-shape.shape-1 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: -5%;
+}
+
+.morph-shape.shape-2 {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    right: -3%;
+}
+
+.morph-shape.shape-3 {
+    width: 150px;
+    height: 150px;
+    bottom: 20%;
+    left: 10%;
+}
+
+/* Magnetic Button Effect */
+.btn.magnetic {
+    position: relative;
+    transition: none;
+}
+
+.btn.magnetic .btn-text {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+/* Text Scramble Effect */
+.text-scramble {
+    position: relative;
+}
+
+.text-scramble .scramble-char {
+    display: inline-block;
+    opacity: 0;
+}
+
+/* Mouse Parallax Elements */
+.parallax-element {
+    transition: transform 0.1s ease-out;
 }
 
 /* ========================================
