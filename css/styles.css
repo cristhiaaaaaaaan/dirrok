@@ -1776,13 +1776,108 @@ section {
 }
 
 /* ========================================
+   ANIME.JS ANIMATIONS
+======================================== */
+
+/* Floating Particles */
+.floating-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background: var(--primary-color);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.particle.glow {
+    box-shadow: 0 0 20px var(--primary-color),
+                0 0 40px var(--primary-color),
+                0 0 60px rgba(255, 107, 53, 0.5);
+}
+
+/* Animated Hero Subtitle */
+.anime-subtitle {
+    opacity: 0;
+}
+
+/* Animated Title Letters */
+.anime-title-text .letter {
+    display: inline-block;
+    opacity: 0;
+}
+
+/* Logo Animation */
+.logo i.animated {
+    display: inline-block;
+}
+
+/* Stats Animation Enhancement */
+.stat-number.counting {
+    transform: scale(1.1);
+}
+
+/* Service Cards Stagger Animation */
+.service-card.anime-hidden {
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+/* WhatsApp Pulse Animation Override for Anime.js */
+.whatsapp-float.anime-pulse {
+    animation: none;
+}
+
+/* Scroll Indicator Animation Enhancement */
+.scroll-indicator .mouse.anime-bounce {
+    animation: none;
+}
+
+/* Navigation Link Hover Effect */
+.nav-link .link-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--gradient-primary);
+}
+
+/* Testimonial Cards Stagger */
+.testimonial-card.anime-hidden {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+/* Feature Items Stagger */
+.feature-item.anime-hidden {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+/* Rainbow Animation for Easter Egg */
+@keyframes rainbow {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+/* ========================================
    PRINT STYLES
 ======================================== */
 
 @media print {
     .navbar,
     .whatsapp-float,
-    .scroll-top {
+    .scroll-top,
+    .floating-particles {
         display: none;
     }
 }

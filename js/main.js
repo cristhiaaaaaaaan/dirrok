@@ -773,3 +773,444 @@ document.addEventListener('keydown', (e) => {
     100% { filter: hue-rotate(360deg); }
 }
 */
+
+// ========================================
+// ANIME.JS ANIMATIONS
+// ========================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if anime.js is loaded
+    if (typeof anime === 'undefined') {
+        console.warn('Anime.js not loaded');
+        return;
+    }
+
+    // ========================================
+    // 1. LOGO ANIMATION - Rotation on load
+    // ========================================
+    const logoIcon = document.querySelector('.logo i');
+    if (logoIcon) {
+        logoIcon.classList.add('animated');
+        anime({
+            targets: logoIcon,
+            rotate: [0, 360],
+            scale: [0.5, 1],
+            opacity: [0, 1],
+            duration: 1200,
+            easing: 'easeOutElastic(1, .5)',
+            delay: 300
+        });
+    }
+
+    // ========================================
+    // 2. HERO SUBTITLE ANIMATION
+    // ========================================
+    const heroSubtitle = document.querySelector('.anime-subtitle');
+    if (heroSubtitle) {
+        anime({
+            targets: heroSubtitle,
+            opacity: [0, 1],
+            translateY: [30, 0],
+            scale: [0.9, 1],
+            duration: 800,
+            easing: 'easeOutExpo',
+            delay: 500
+        });
+    }
+
+    // ========================================
+    // 3. HERO TITLE - Letter by letter wave animation
+    // ========================================
+    const titleTexts = document.querySelectorAll('.anime-title-text');
+    titleTexts.forEach((textElement) => {
+        const text = textElement.textContent;
+        textElement.innerHTML = '';
+
+        // Wrap each letter in a span
+        text.split('').forEach((char) => {
+            const span = document.createElement('span');
+            span.className = 'letter';
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            textElement.appendChild(span);
+        });
+    });
+
+    // Animate letters with wave effect
+    anime({
+        targets: '.anime-title-text .letter',
+        opacity: [0, 1],
+        translateY: [50, 0],
+        rotateX: [-90, 0],
+        duration: 1200,
+        delay: anime.stagger(30, {start: 800}),
+        easing: 'easeOutExpo'
+    });
+
+    // ========================================
+    // 4. HERO BUTTONS ANIMATION
+    // ========================================
+    anime({
+        targets: '.hero-buttons .btn',
+        opacity: [0, 1],
+        translateY: [40, 0],
+        scale: [0.8, 1],
+        duration: 800,
+        delay: anime.stagger(150, {start: 1500}),
+        easing: 'easeOutBack'
+    });
+
+    // ========================================
+    // 5. SCROLL INDICATOR - Continuous bounce
+    // ========================================
+    const scrollMouse = document.querySelector('.scroll-indicator .mouse');
+    if (scrollMouse) {
+        scrollMouse.classList.add('anime-bounce');
+        anime({
+            targets: scrollMouse,
+            translateY: [-10, 10],
+            duration: 1500,
+            direction: 'alternate',
+            loop: true,
+            easing: 'easeInOutQuad'
+        });
+    }
+
+    // ========================================
+    // 6. FLOATING PARTICLES
+    // ========================================
+    const particlesContainer = document.getElementById('floatingParticles');
+    if (particlesContainer) {
+        createFloatingParticles(particlesContainer);
+    }
+
+    function createFloatingParticles(container) {
+        const particleCount = 25;
+        const colors = ['#ff6b35', '#f7931e', '#1a759f', '#ffffff'];
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle' + (Math.random() > 0.7 ? ' glow' : '');
+
+            // Random size
+            const size = Math.random() * 8 + 3;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+
+            // Random color
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+            // Random starting position
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+
+            container.appendChild(particle);
+
+            // Animate each particle
+            animateParticle(particle);
+        }
+    }
+
+    function animateParticle(particle) {
+        const duration = Math.random() * 15000 + 10000;
+        const delay = Math.random() * 5000;
+
+        anime({
+            targets: particle,
+            translateX: function() {
+                return anime.random(-150, 150);
+            },
+            translateY: function() {
+                return anime.random(-200, 200);
+            },
+            opacity: [0, 0.7, 0],
+            scale: [0, 1, 0.5],
+            duration: duration,
+            delay: delay,
+            easing: 'easeInOutQuad',
+            complete: function() {
+                // Reset position and restart
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                animateParticle(particle);
+            }
+        });
+    }
+
+    // ========================================
+    // 7. WHATSAPP BUTTON - Smooth pulse
+    // ========================================
+    const whatsappBtn = document.querySelector('.whatsapp-float');
+    if (whatsappBtn) {
+        whatsappBtn.classList.add('anime-pulse');
+
+        anime({
+            targets: whatsappBtn,
+            scale: [1, 1.15, 1],
+            boxShadow: [
+                '0 5px 25px rgba(37, 211, 102, 0.5)',
+                '0 8px 40px rgba(37, 211, 102, 0.8)',
+                '0 5px 25px rgba(37, 211, 102, 0.5)'
+            ],
+            duration: 2000,
+            loop: true,
+            easing: 'easeInOutQuad'
+        });
+    }
+
+    // ========================================
+    // 8. SERVICE CARDS - Staggered entrance
+    // ========================================
+    const serviceCards = document.querySelectorAll('.service-card');
+
+    // Create Intersection Observer for service cards
+    const serviceObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                anime({
+                    targets: '.service-card',
+                    opacity: [0, 1],
+                    translateY: [80, 0],
+                    rotateX: [15, 0],
+                    scale: [0.9, 1],
+                    duration: 1000,
+                    delay: anime.stagger(150),
+                    easing: 'easeOutExpo'
+                });
+                serviceObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    if (serviceCards.length > 0) {
+        serviceObserver.observe(document.querySelector('.services-grid'));
+    }
+
+    // ========================================
+    // 9. ENHANCED COUNTER ANIMATION with Anime.js
+    // ========================================
+    const statNumbers = document.querySelectorAll('.stat-number');
+
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                statNumbers.forEach((stat, index) => {
+                    const target = parseInt(stat.getAttribute('data-target'));
+
+                    // Reset the counter value
+                    stat.textContent = '0';
+
+                    // Create counter object for anime.js
+                    const counter = { value: 0 };
+
+                    anime({
+                        targets: counter,
+                        value: target,
+                        round: 1,
+                        duration: 2500,
+                        delay: index * 200,
+                        easing: 'easeOutExpo',
+                        update: function() {
+                            stat.textContent = Math.floor(counter.value);
+                        },
+                        complete: function() {
+                            // Add plus sign for numbers that had it
+                            if (target >= 100) {
+                                stat.textContent = target + '+';
+                            }
+                        }
+                    });
+
+                    // Bounce effect on stat item
+                    anime({
+                        targets: stat.closest('.stat-item'),
+                        scale: [0.8, 1.05, 1],
+                        opacity: [0, 1],
+                        duration: 800,
+                        delay: index * 200,
+                        easing: 'easeOutBack'
+                    });
+                });
+
+                counterObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+        counterObserver.observe(statsSection);
+    }
+
+    // ========================================
+    // 10. TESTIMONIAL CARDS - Staggered entrance
+    // ========================================
+    const testimonialCards = document.querySelectorAll('.testimonial-card');
+
+    const testimonialObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                anime({
+                    targets: '.testimonial-card',
+                    opacity: [0, 1],
+                    translateX: [-50, 0],
+                    scale: [0.95, 1],
+                    duration: 900,
+                    delay: anime.stagger(120),
+                    easing: 'easeOutQuart'
+                });
+                testimonialObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    if (testimonialCards.length > 0) {
+        testimonialObserver.observe(document.querySelector('.testimonials-grid'));
+    }
+
+    // ========================================
+    // 11. FEATURE ITEMS - Staggered entrance
+    // ========================================
+    const featureItems = document.querySelectorAll('.feature-item');
+
+    const featureObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                anime({
+                    targets: '.feature-item',
+                    opacity: [0, 1],
+                    translateX: [-30, 0],
+                    duration: 700,
+                    delay: anime.stagger(100),
+                    easing: 'easeOutCubic'
+                });
+                featureObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    if (featureItems.length > 0) {
+        featureObserver.observe(document.querySelector('.about-features'));
+    }
+
+    // ========================================
+    // 12. NAVIGATION HOVER ANIMATION
+    // ========================================
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    navLinks.forEach(link => {
+        link.addEventListener('mouseenter', function() {
+            anime({
+                targets: this,
+                color: '#ff6b35',
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+        });
+
+        link.addEventListener('mouseleave', function() {
+            if (!this.classList.contains('active')) {
+                anime({
+                    targets: this,
+                    color: 'inherit',
+                    duration: 300,
+                    easing: 'easeOutQuad'
+                });
+            }
+        });
+    });
+
+    // ========================================
+    // 13. BUTTON HOVER EFFECTS
+    // ========================================
+    const buttons = document.querySelectorAll('.btn');
+
+    buttons.forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            anime.remove(this);
+            anime({
+                targets: this,
+                scale: 1.05,
+                duration: 200,
+                easing: 'easeOutQuad'
+            });
+        });
+
+        btn.addEventListener('mouseleave', function() {
+            anime.remove(this);
+            anime({
+                targets: this,
+                scale: 1,
+                duration: 300,
+                easing: 'easeOutElastic(1, .5)'
+            });
+        });
+    });
+
+    // ========================================
+    // 14. SECTION HEADERS ANIMATION
+    // ========================================
+    const sectionHeaders = document.querySelectorAll('.section-header');
+
+    sectionHeaders.forEach(header => {
+        const headerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const subtitle = header.querySelector('.section-subtitle');
+                    const title = header.querySelector('.section-title');
+                    const description = header.querySelector('.section-description');
+
+                    anime.timeline({easing: 'easeOutExpo'})
+                        .add({
+                            targets: subtitle,
+                            opacity: [0, 1],
+                            translateY: [20, 0],
+                            duration: 600
+                        })
+                        .add({
+                            targets: title,
+                            opacity: [0, 1],
+                            translateY: [30, 0],
+                            duration: 700
+                        }, '-=400')
+                        .add({
+                            targets: description,
+                            opacity: [0, 1],
+                            translateY: [20, 0],
+                            duration: 600
+                        }, '-=500');
+
+                    headerObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        headerObserver.observe(header);
+    });
+
+    // ========================================
+    // 15. EXPERIENCE BADGE ANIMATION
+    // ========================================
+    const experienceBadge = document.querySelector('.experience-badge');
+    if (experienceBadge) {
+        const badgeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    anime({
+                        targets: experienceBadge,
+                        scale: [0, 1],
+                        rotate: [-45, 0],
+                        opacity: [0, 1],
+                        duration: 1000,
+                        easing: 'easeOutElastic(1, .6)',
+                        delay: 500
+                    });
+                    badgeObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        badgeObserver.observe(experienceBadge);
+    }
+
+    console.log('%c✨ Anime.js animations loaded!', 'color: #ff6b35; font-size: 14px; font-weight: bold;');
+});

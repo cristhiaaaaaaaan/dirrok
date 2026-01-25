@@ -63,6 +63,9 @@
 
     <!-- HERO SECTION -->
     <section class="hero" id="home">
+        <!-- Floating Particles -->
+        <div class="floating-particles" id="floatingParticles"></div>
+
         <!-- Reactive Background -->
         <div class="carousel-reactive-bg">
             <canvas id="reactiveCanvas"></canvas>
@@ -103,9 +106,9 @@
         <div class="hero-content">
             <div class="container">
                 <div class="hero-text" data-aos="fade-up">
-                    <span class="hero-subtitle">Transforma Tu Cuerpo, Transforma Tu Vida</span>
+                    <span class="hero-subtitle anime-subtitle">Transforma Tu Cuerpo, Transforma Tu Vida</span>
                     <h1 class="hero-title">
-                        No Esperes Más Para Ser La <span class="highlight" id="typingText"></span> De Ti Mismo
+                        <span class="anime-title-text">No Esperes Más Para Ser La</span> <span class="highlight" id="typingText"></span> <span class="anime-title-text">De Ti Mismo</span>
                     </h1>
                     <p class="hero-description">
                         Entrenamiento personalizado. Resultados reales. Un plan diseñado para ti.
@@ -637,6 +640,9 @@
 
     <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Anime.js Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
 
     <!-- Custom JavaScript -->
     <script src="js/main.js"></script>
